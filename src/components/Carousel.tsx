@@ -72,10 +72,18 @@ const Carousel: React.FC<Props> = ({
         </ul>
       </div>
 
-      <button data-cy="prev" onClick={handlePrev} disabled={index === 0}>
+      <button
+        data-cy="prev"
+        onClick={handlePrev}
+        disabled={infinite && index === 0}
+      >
         Prev
       </button>
-      <button data-cy="next" onClick={handleNext} disabled={index >= maxIndex}>
+      <button
+        data-cy="next"
+        onClick={handleNext}
+        disabled={infinite && index >= maxIndex}
+      >
         Next
       </button>
     </div>
