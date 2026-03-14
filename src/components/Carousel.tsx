@@ -8,6 +8,7 @@ interface Props {
   step?: number;
   itemWidth?: number;
   animationDuration?: number;
+  infinite?: boolean;
 }
 
 const Carousel: React.FC<Props> = ({
@@ -16,6 +17,7 @@ const Carousel: React.FC<Props> = ({
   step = 3,
   itemWidth = 130,
   animationDuration = 1000,
+  infinite = false,
 }) => {
   const [index, setIndex] = useState(0);
 
@@ -23,10 +25,26 @@ const Carousel: React.FC<Props> = ({
   const maxIndex = images.length - frameSize;
 
   const handleNext = () => {
+    if (index >= maxIndex) {
+      if (infinite) {
+        setIndex(0);
+      }
+
+      return;
+    }
+
     setIndex(prev => Math.min(prev + step, maxIndex));
   };
 
   const handlePrev = () => {
+    if (index === 0) {
+      if (infinite) {
+        setIndex(maxIndex);
+      }
+
+      return;
+    }
+
     setIndex(prev => Math.max(prev - step, 0));
   };
 

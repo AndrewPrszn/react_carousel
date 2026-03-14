@@ -19,11 +19,19 @@ const App: React.FC = () => {
   const [step, setStep] = useState(3);
   const [frameSize, setFrameSize] = useState(3);
   const [itemWidth, setItemWidth] = useState(130);
+  const [animationDuration, setAnimationDuration] = useState(1000);
 
   return (
     <div className="App">
       <h1>Carousel with {images.length} images</h1>
 
+      <label htmlFor="durationId">Animation Duration (ms):</label>
+      <input
+        id="durationId"
+        type="number"
+        value={animationDuration}
+        onChange={e => setAnimationDuration(Number(e.target.value))}
+      />
       <label htmlFor="stepId">Step:</label>
       <input
         id="stepId"
@@ -53,6 +61,7 @@ const App: React.FC = () => {
         frameSize={frameSize}
         step={step}
         itemWidth={itemWidth}
+        animationDuration={animationDuration}
       />
     </div>
   );
