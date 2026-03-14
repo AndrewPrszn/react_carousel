@@ -1,26 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Carousel.scss';
+// import classNames = require('classnames');
 
-const Carousel: React.FC = () => (
-  <div className="Carousel">
-    <ul className="Carousel__list">
-      <li>
-        <img src="./img/1.png" alt="1" />
-      </li>
-      <li>
-        <img src="./img/1.png" alt="2" />
-      </li>
-      <li>
-        <img src="./img/1.png" alt="3" />
-      </li>
-      <li>
-        <img src="./img/1.png" alt="4" />
-      </li>
-    </ul>
+interface Props {
+  images: string[];
+  frameSize?: number;
+  step?: number;
+  itemWidth?: number;
+  animationDuration?: number;
+}
 
-    <button type="button">Prev</button>
-    <button type="button">Next</button>
-  </div>
-);
+const Carousel: React.FC<Props> = ({
+  images,
+  frameSize = 3,
+  step = 3,
+  itemWidth = 130,
+  animationDuration = 1000,
+}) => {
+  const [index, setIndex] = useState(0);
+
+  const viewportWidth = itemWidth * frameSize;
+  const maxIndex = images.length - frameSize;
+
+  const handleNext = () => {
+    setIndex(prev => Math.min(prev + step, maxIndex));
+  };
+
+  const handlePrev = () => {
+    setIndex(prev => Math.max(prev - step, 0));
+  };
+
+  return (
+    <div className="Carousel">
+      <h1 data-cy="title">Carousel</h1>
+      <div className="Carousel__viewport" style={{ width: viewportWidth }}>
+        <ul
+          className="Carousel__list"
+          style={{
+            transform: `translateX(-${index * itemWidth}px)`,
+            transition: `transform ${animationDuration}ms`,
+          }}
+        >
+          {images.map((img, i) => (
+            <li key={i}>
+              <img
+                src={img}
+                alt={`img-${i}`}
+                width={itemWidth}
+                height={itemWidth}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <button data-cy="prev" onClick={handlePrev} disabled={index === 0}>
+        Prev
+      </button>
+      <button data-cy="next" onClick={handleNext} disabled={index >= maxIndex}>
+        Next
+      </button>
+    </div>
+  );
+};
 
 export default Carousel;
